@@ -10,6 +10,7 @@ public abstract class TabelaHash {
 	private int tamanho;
 	private List<LinkedList<String>> lista;
 	private Long tempoExec;
+	private int numIndices;
 
 	public TabelaHash(int tamanho) {
 		this.tamanho = tamanho;
@@ -23,6 +24,7 @@ public abstract class TabelaHash {
 	public void gerarRelatorio() {
 		System.out.println("O tempo de execução desta tabela foi --> " + getTempoExec() + " milissegundos");
 		System.out.println("Total de colisões: " + getColisoes());
+		System.out.println("Total de índices utilizados: " + getNumIndices());
 	}
 
 	public abstract int funcaoHash(String key);
@@ -37,6 +39,8 @@ public abstract class TabelaHash {
 				listaEncadeada.add(listaCSV[i]);
 				if (listaEncadeada.size() > 1) {
 					setColisoes(getColisoes() + 1);
+				} else {
+					setNumIndices(getNumIndices() + 1);
 				}
 			}
 		}
@@ -46,19 +50,13 @@ public abstract class TabelaHash {
 		gerarRelatorio();
 	}
 
-	public void mostrarDados() {
-		int index = 0;
-		for (LinkedList<String> listaEncadeada : getLista()) {
-			System.out.print("INDEX " + index + " --> ");
-			if (listaEncadeada.isEmpty()) {
-				System.out.println("vazio");
-			} else {
-				for (String elemento : listaEncadeada) {
-					System.out.print(elemento + " ");
-				}
-				System.out.println();
+	public void mostrarColisoesPorIndex() {
+		System.out.println("\nColisões por índice (clusterização):");
+		for (int i = 0; i < lista.size(); i++) {
+			LinkedList<String> listaEncadeada = lista.get(i);
+			if (listaEncadeada.size() > 1) {
+				System.out.println("Índice " + i + ": " + listaEncadeada.size() + " colisões");
 			}
-			index++;
 		}
 	}
 
@@ -92,5 +90,13 @@ public abstract class TabelaHash {
 
 	public void setTempoExec(Long tempoExec) {
 		this.tempoExec = tempoExec;
+	}
+
+	public int getNumIndices() {
+		return numIndices;
+	}
+
+	public void setNumIndices(int numIndices) {
+		this.numIndices = numIndices;
 	}
 }
