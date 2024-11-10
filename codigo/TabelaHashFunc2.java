@@ -4,7 +4,7 @@ public class TabelaHashFunc2 extends TabelaHash {
 
 	public int separador = -1;
 	public int diferencialImpar = -1;
-	public int diferencialPar = 501;
+	public int diferencialPar = (getTamanho() / 2) + 1;
 
 	public TabelaHashFunc2(int tamanho) {
 		super(tamanho);
@@ -14,11 +14,11 @@ public class TabelaHashFunc2 extends TabelaHash {
 	public int funcaoHash(String nome) {
 		this.separador++;
 		this.diferencialImpar++;
-		if (this.diferencialImpar > 2500) {
+		if (this.diferencialImpar > getTamanho() / 2) {
 			this.diferencialImpar = 0;
 		}
 		this.diferencialPar++;
-		if (this.diferencialPar > 5000) {
+		if (this.diferencialPar > getTamanho()) {
 			this.diferencialPar = 0;
 		}
 		int valorNome = 0;
