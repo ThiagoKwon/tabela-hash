@@ -9,7 +9,7 @@ public abstract class TabelaHash {
 	private int colisoes;
 	private int tamanho;
 	private List<LinkedList<String>> lista;
-	private Long tempoExec;
+	private double tempoExec;
 	private int numIndices;
 
 	public TabelaHash(int tamanho) {
@@ -21,16 +21,10 @@ public abstract class TabelaHash {
 		}
 	}
 
-	public void gerarRelatorio() {
-		System.out.println("O tempo de execução desta tabela foi --> " + getTempoExec() + " milissegundos");
-		System.out.println("Total de colisões: " + getColisoes());
-		System.out.println("Total de índices utilizados: " + getNumIndices());
-	}
-
 	public abstract int funcaoHash(String key);
 
 	public void put(String[] listaCSV) {
-		Long tempoInicio = System.currentTimeMillis();
+		Long tempoInicio = System.nanoTime();
 		if (listaCSV != null) {
 			for (int i = 0; i < listaCSV.length; i++) {
 				int index = funcaoHash(listaCSV[i]);
@@ -44,10 +38,29 @@ public abstract class TabelaHash {
 				}
 			}
 		}
-		Long tempoFim = System.currentTimeMillis();
+		Long tempoFim = System.nanoTime();
 
-		setTempoExec(tempoFim - tempoInicio);
+		setTempoExec((tempoFim - tempoInicio) / 1_000_000.0);
 		gerarRelatorio();
+	}
+
+	public boolean buscar(String key) {
+		Long tempoInicio = System.nanoTime();
+		int index = funcaoHash(key);
+		LinkedList<String> listaEncadeada = lista.get(index);
+		Long tempoFim = System.nanoTime();
+
+		if (listaEncadeada.contains(key)) {
+			System.out.println(
+					"Tempo de busca da chave " + key + " --> " + ((tempoFim - tempoInicio) / 1_000_000.0) + " ms");
+		}
+		return listaEncadeada.contains(key);
+	}
+
+	public void gerarRelatorio() {
+		System.out.println("O tempo de execução desta tabela foi --> " + getTempoExec() + " ms");
+		System.out.println("Total de colisões: " + getColisoes());
+		System.out.println("Total de índices utilizados: " + getNumIndices());
 	}
 
 	public void mostrarColisoesPorIndex() {
@@ -84,12 +97,12 @@ public abstract class TabelaHash {
 		this.lista = lista;
 	}
 
-	public Long getTempoExec() {
+	public Double getTempoExec() {
 		return tempoExec;
 	}
 
-	public void setTempoExec(Long tempoExec) {
-		this.tempoExec = tempoExec;
+	public void setTempoExec(double d) {
+		this.tempoExec = d;
 	}
 
 	public int getNumIndices() {
