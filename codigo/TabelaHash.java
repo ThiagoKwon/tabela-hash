@@ -67,8 +67,8 @@ public abstract class TabelaHash {
 		System.out.println("\nColisões por índice (clusterização):");
 		for (int i = 0; i < lista.size(); i++) {
 			LinkedList<String> listaEncadeada = lista.get(i);
-			if (listaEncadeada.size() > 1) {
-				System.out.println("Índice " + i + ": " + listaEncadeada.size() + " colisões");
+			if (listaEncadeada.size() >= 1) {
+				System.out.println("Índice " + i + ": " + (listaEncadeada.size() - 1) + " colisões");
 			} else {
 				System.out.println("VAZIO");
 			}
