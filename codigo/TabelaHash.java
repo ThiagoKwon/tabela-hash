@@ -69,6 +69,8 @@ public abstract class TabelaHash {
 			LinkedList<String> listaEncadeada = lista.get(i);
 			if (listaEncadeada.size() > 1) {
 				System.out.println("Índice " + i + ": " + listaEncadeada.size() + " colisões");
+			} else {
+				System.out.println("VAZIO");
 			}
 		}
 	}
